@@ -1,0 +1,72 @@
+Would you like a travel plan? Can I proceed with train or flight booking and later hotel booking?
+Yes
+No
+✈️
+No travel plan is waiting to start for this chat.
+
+
+extraction_state_low
+in the existing layer1extraction.py add function/code part what ever is appropreate 
+for proper equality check for  below thing- step 1:scan 1st page of pdf i)extract vender_name.
+what is  vender_name scan the 1st page header part check for "Clarivate" 
+in the existing layer1extraction.py add function/code part what ever is appropreate 
+for proper equality check for  below thing:
+step 1:scan 1st page of pdf i)extract vender_name. signal to find it: 1st clue: in the header part(extend the height of header) of page  in the left half portion. 2nd clue: 
+above the "Trademark Research Report" or "Title Research Report". fallback look for  -"Research Report".  3rd clue: vender_name has bold words and boldness is higher than the words of 2nd clue("Trademark Research Report" or "Title Research Report" or fallback-"Research Report" ). 4th clue: font-size of vender_name is larger compare to any other text on the 1st page.
+ii)after extraction vender_name implement a equality check for vender_name="Clarivate" with that "TM"on top of "Clarivate"  or not. if vender_name="Clarivate"
+then
+
+
+
+
+
+make  layer1extraction.py -the flow of the python script
+step 1:scan 1st page of pdf i)extract vender_name. signal to find it: 1st clue: in the header part(extend the height of header) of page  in the left half portion. 2nd clue: 
+above the "Trademark Research Report" or "Title Research Report". fallback look for  -"Research Report".  3rd clue: vender_name has bold words and boldness is higher than the words of 2nd clue("Trademark Research Report" or "Title Research Report" or fallback-"Research Report" ). 4th clue: font-size of vender_name is larger compare to any other text on the 1st page.
+ii) vender_name accurately extract details of below filed with filed name- fileds- Mark Searched: ,Classes Searched: , Goods/Services:  
+
+info you need  for step2: "page: number" in which number can be 1,2,3,... is located in the footer of every page and "page: number" is located in the bottom-right portion of every page.
+step -2 : "scan page no 3 as "page: 3"at first and scan/lookup the words "Table of Contents", signal to find text which is "Table of Contents": i) its pack in the rectangle frame of boundary with black color.ii) it is bold words iii)larger font-size. if not found word-"Table of Contents" fallback to scan "page: 4"- if not found then fallback to "page: 2".
+step 3: after getting the "Table of Contents" -1)on the same page track/lookup for wording -"State Trademark Report" then lookup for wording-"State Summary"  within "State Trademark Report" and extract numerical value from the same line of "State Summary" and assign the variable "state_starting_page"= that numerical value.for example- "State Summary....................223" so python script must able to extract starting_page=223
+2)on the same page track/lookup for wording - "Web Common Low" then lookup for wording-"Analyst Review" within "Web Common Low" and extract numerical value from the same line of "Analyst Review" and assign the variable "state_end_page"= that numerical value. for example- "Analyst Review..................229" so python script must able to extract state_end_page=229.
+step 4: give final json file as named = time of creation of that json file. striclty include below filed and thier values in json file:
+vender_name, Mark Searched: ,Classes Searched: , Goods/Services Searched: =[put extracted details from "Goods/Services:" filed here], 
+note- failing case- if because of some reason the field are not present  in pdf or python script is failing in extraction then for those field set value=error. but think hard ,be logical then  make the python script that haven't failing case.
+
+
+
+python layer1extraction.py "compumark/US Search Report - HAIR GENIUS 1.pdf"
+
+your task- think hard and be very logical -use and import  -as 1st extraction layer in extract_state_summary.py. use range strictly from state_starting_page to state_end_page and limit the extraction and working of extract_state_summary.py striclty in the range from state_starting_page to state_end_page .
+2nd task very important filed addition that is "state_image_path" in the extracted json output of extract_state_summary.py- make code  file for the flow step1-extract all the images( in .png or approprite form) striclty within the range from state_starting_page to state_end_page
+step 2- store all images in azure blob storage using key from .env file ,the key is: AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=https;AccountName=aldrinblobchat;AccountKey=V/v14tj5qalNRBfTMe8N9aj4fqIzmioWA5LdmxE75SENE3WjE3ejgB97T5IZyWgOHlfbExhBnE3u+AStih62Yw==;EndpointSuffix=core.windows.net
+analyse reference file and develope own "state_image.py".flow of reference file-1.Load PDF (open_fitz_doc)
+2.Extract image:extract_page_image(), try PyMuPDF, fallback pdfplumber
+3.processing:detect_logo_crop(), extract_image_block_crop()
+4.Save image: save_image_bytes()
+5.Convert if needed: load_image_base64().
+goal of step 2-while extract_state_summary.py is running call state_image.py and get url then store state_image_path=that url.
+
+
+conda run -n extraction_state_low python variation_extraction_compumark.py "Search Report - CARB RIGHT.pdf"
+python layer1extraction.py "compumark/Search Report - MOCHA MOOD PIE 5.pdf"
+
+
+
+karmadivyanshu
+
+
+
+AC 1- validate field level extraction :
+If label exists, corresponding extracted value must exist.
+if value not found -> recovery attempt -> add in errors
+
+-LABEL EXISTS BUT EXTRACTION FAILED- 
+1.1)  recovery attempt
+1.2) if recovery also fails ->
+    mention that label in "errors" (example-registration_no is empty while Registration No.: exist )
+
+-LABEL DOES NOT EXIST ON PAGE: system should explicitly mention that.
+1.1)  recovery attempt
+1.2) if recovery also fails ->
+    mention that label in "warnings" (field.registration_no: label not present on page)

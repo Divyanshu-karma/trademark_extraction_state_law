@@ -1,0 +1,4 @@
+orjson
+fitz
+pymupdf(may be)
+pdfplumber(may be)
