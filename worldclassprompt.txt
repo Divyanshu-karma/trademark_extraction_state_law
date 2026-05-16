@@ -39,7 +39,7 @@ python layer1extraction.py "compumark/US Search Report - HAIR GENIUS 1.pdf"
 
 your task- think hard and be very logical -use and import  -as 1st extraction layer in extract_state_summary.py. use range strictly from state_starting_page to state_end_page and limit the extraction and working of extract_state_summary.py striclty in the range from state_starting_page to state_end_page .
 2nd task very important filed addition that is "state_image_path" in the extracted json output of extract_state_summary.py- make code  file for the flow step1-extract all the images( in .png or approprite form) striclty within the range from state_starting_page to state_end_page
-step 2- store all images in azure blob storage using key from .env file ,the key is: AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=https;AccountName=aldrinblobchat;AccountKey=V/v14tj5qalNRBfTMe8N9aj4fqIzmioWA5LdmxE75SENE3WjE3ejgB97T5IZyWgOHlfbExhBnE3u+AStih62Yw==;EndpointSuffix=core.windows.net
+step 2- store all images in azure blob storage using key from .env file ,t
 analyse reference file and develope own "state_image.py".flow of reference file-1.Load PDF (open_fitz_doc)
 2.Extract image:extract_page_image(), try PyMuPDF, fallback pdfplumber
 3.processing:detect_logo_crop(), extract_image_block_crop()
